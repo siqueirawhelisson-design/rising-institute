@@ -1,0 +1,153 @@
+# Decap CMS: edita os ficheiros JSON em /content e faz commit no repositório.
+# PENDENTE: definir o repositório e o método de autenticação antes de usar.
+# Para testar localmente: `npx decap-server` e descomentar local_backend.
+backend:
+  name: github
+  repo: OWNER/rising-institute   # PENDENTE
+  branch: main
+# local_backend: true
+
+locale: pt
+media_folder: public/documents/courses
+public_folder: /documents/courses
+publish_mode: simple
+
+collections:
+  - name: formacoes
+    label: Formações
+    files:
+      - name: catalogo
+        label: Catálogo de formações
+        file: content/formacoes.json
+        fields:
+          - name: courses
+            label: Formações
+            label_singular: Formação
+            widget: list
+            summary: "{{fields.title}} · {{fields.area}} · {{fields.status}}"
+            fields:
+              - { name: title, label: Título, widget: string }
+              - { name: slug, label: "Slug (URL)", widget: string, hint: "Minúsculas e hífenes. Não alterar depois de publicado." }
+              - name: area
+                label: Área
+                widget: select
+                options:
+                  - { label: Competências Comportamentais, value: competencias-comportamentais }
+                  - { label: Liderança e Gestão, value: lideranca-gestao }
+                  - { label: Educação, value: educacao }
+                  - { label: Inteligência Artificial e Futuro, value: inteligencia-artificial-futuro }
+              - { name: status, label: Estado, widget: select, options: [publicado, rascunho], default: rascunho }
+              - { name: featured, label: Destaque na homepage, widget: boolean, default: false }
+              - { name: summary, label: Descrição curta, widget: text, required: false }
+              - { name: objectives, label: Objetivos, widget: list, required: false, default: [] }
+              - { name: audience, label: Público-alvo, widget: text, required: false }
+              - { name: contents, label: Conteúdos programáticos, widget: list, required: false, default: [] }
+              - { name: methodology, label: Metodologia, widget: text, required: false }
+              - { name: modality, label: Modalidade, widget: string, required: false }
+              - { name: duration, label: Duração, widget: string, required: false }
+              - { name: dates, label: Datas, widget: string, required: false }
+              - { name: price, label: Investimento, widget: string, required: false }
+              - { name: specialists, label: "Especialistas (slugs)", widget: list, required: false, default: [] }
+              - { name: certification, label: Certificação, widget: string, required: false }
+              - { name: pdf, label: Programa em PDF, widget: file, required: false }
+              - { name: image, label: Imagem, widget: string, required: false }
+              - { name: pending, label: "Pendências internas (não aparecem no site)", widget: list, required: false, default: [] }
+  - name: especialistas
+    label: Especialistas
+    files:
+      - name: lista
+        label: Especialistas
+        file: content/especialistas.json
+        fields:
+          - name: specialists
+            label: Especialistas
+            label_singular: Especialista
+            widget: list
+            summary: "{{fields.name}} · {{fields.status}}"
+            fields:
+              - { name: name, label: Nome, widget: string }
+              - { name: slug, label: "Slug (URL)", widget: string }
+              - { name: status, label: Estado, widget: select, options: [publicado, rascunho], default: rascunho }
+              - { name: photo, label: "Fotografia (ex.: mafalda/mafalda-retrato-preto)", widget: string }
+              - { name: role, label: Função, widget: string }
+              - { name: areas, label: Áreas de especialização, widget: list, default: [] }
+              - { name: credentials, label: Percurso e credenciais confirmados, widget: list, default: [] }
+              - { name: bio, label: Biografia, widget: text, required: false }
+              - { name: linkedin, label: LinkedIn, widget: string, required: false }
+              - { name: courses, label: "Formações (slugs)", widget: list, required: false, default: [] }
+  - name: testemunhos
+    label: Testemunhos
+    files:
+      - name: lista
+        label: Testemunhos
+        file: content/testemunhos.json
+        fields:
+          - name: testimonials
+            label: Testemunhos
+            label_singular: Testemunho
+            widget: list
+            fields:
+              - { name: quote, label: Texto aprovado, widget: text }
+              - { name: name, label: Nome, widget: string }
+              - { name: role, label: Cargo, widget: string, required: false }
+              - { name: organization, label: Organização, widget: string, required: false }
+              - { name: course, label: Formação, widget: string, required: false }
+              - { name: photo, label: Fotografia, widget: string, required: false }
+              - { name: authorized, label: Autorização escrita recebida, widget: boolean, default: false }
+              - { name: status, label: Estado, widget: select, options: [publicado, rascunho], default: rascunho }
+  - name: certificacoes
+    label: Certificações
+    files:
+      - name: lista
+        label: Certificações
+        file: content/certificacoes.json
+        fields:
+          - name: certifications
+            label: Certificações
+            label_singular: Certificação
+            widget: list
+            fields:
+              - { name: name, label: Nome, widget: string }
+              - { name: slug, label: Slug, widget: string }
+              - { name: description, label: Descrição, widget: text }
+              - { name: audience, label: Público-alvo, widget: string, required: false }
+              - { name: requirements, label: Requisitos, widget: list, required: false, default: [] }
+              - { name: relatedCourse, label: Formação relacionada, widget: string, required: false }
+              - { name: issuer, label: Entidade certificadora, widget: string, required: false }
+              - { name: validity, label: Validade, widget: string, required: false }
+              - { name: procedure, label: Procedimento, widget: text, required: false }
+              - { name: pdf, label: Documento PDF, widget: file, required: false }
+              - { name: status, label: Estado, widget: select, options: [publicado, rascunho], default: rascunho }
+  - name: instituicao
+    label: Dados institucionais
+    files:
+      - name: site
+        label: Contactos e dados legais
+        file: content/site.json
+        fields:
+          - { name: name, label: Nome, widget: string }
+          - { name: tagline, label: Assinatura, widget: string }
+          - { name: description, label: Descrição, widget: text }
+          - name: contact
+            label: Contacto
+            widget: object
+            fields:
+              - { name: email, label: Email, widget: string, required: false }
+              - { name: phone, label: Telefone, widget: string, required: false }
+              - { name: address, label: Morada, widget: string, required: false }
+              - { name: hours, label: Horário, widget: string, required: false }
+          - name: social
+            label: Redes sociais oficiais
+            widget: list
+            required: false
+            fields:
+              - { name: label, label: Nome, widget: string }
+              - { name: url, label: URL, widget: string }
+          - name: legal
+            label: Dados legais
+            widget: object
+            fields:
+              - { name: entityName, label: Denominação legal, widget: string, required: false }
+              - { name: nif, label: NIF, widget: string, required: false }
+              - { name: registeredAddress, label: Sede, widget: string, required: false }
+              - { name: privacyContact, label: Contacto de privacidade, widget: string, required: false }
