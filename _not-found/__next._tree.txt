@@ -1,0 +1,2 @@
+:HL["/rising-institute/_next/static/chunks/22pqhu_2h5m7k.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":4112,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":4160,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"E9iYxKz-DM9wWtPF1nZ-2"}
